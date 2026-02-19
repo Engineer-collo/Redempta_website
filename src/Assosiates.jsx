@@ -4,7 +4,7 @@ const Associates = () => {
   // Example associates data
   const associates = [
     {
-      name: "Foundation Gate Church",
+      name: "Fountain Gate Church",
       logo: "fgcn.png",
     },
     {
