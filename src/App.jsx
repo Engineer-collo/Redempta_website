@@ -23,6 +23,7 @@ import VisitorsAdmin from './VisitorsAdmin';
 import BulkEmailSender from './BulkEmailSender';
 import ProtectedAdmin from './ProtectedAdmin';
 import InquiryAdmin from './InquiryAdmin';
+import LandingPage from './LandingPage';
 
 
 
@@ -33,6 +34,9 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/feedback" element={<FeedbackForm />} />
+
+  {/* Public Landing Page */}
+  <Route path="/promo" element={<LandingPage />} />
 
         {/* Admin Routes with Nested Layout */}
         <Route path="/admin" element={<ProtectedAdmin />}>
@@ -51,7 +55,7 @@ const App = () => {
           <Route path="visitors" element={<VisitorsAdmin />} />
           <Route path="emails" element={<BulkEmailSender />} />
           <Route path="inquiry" element={<InquiryAdmin />} />
-
+        
         </Route>
       </Routes>
       <ToastContainer position="top-center" autoClose={3000} />
