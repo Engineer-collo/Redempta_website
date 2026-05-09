@@ -24,6 +24,7 @@ import BulkEmailSender from './BulkEmailSender';
 import ProtectedAdmin from './ProtectedAdmin';
 import InquiryAdmin from './InquiryAdmin';
 import LandingPage from './LandingPage';
+import RedemptaKanja from './RedemptaKanja';
 
 
 
@@ -37,6 +38,8 @@ const App = () => {
 
   {/* Public Landing Page */}
   <Route path="/promo" element={<LandingPage />} />
+  <Route path="biography" element={<RedemptaKanja />} />
+
 
         {/* Admin Routes with Nested Layout */}
         <Route path="/admin" element={<ProtectedAdmin />}>
@@ -55,7 +58,7 @@ const App = () => {
           <Route path="visitors" element={<VisitorsAdmin />} />
           <Route path="emails" element={<BulkEmailSender />} />
           <Route path="inquiry" element={<InquiryAdmin />} />
-        
+          
         </Route>
       </Routes>
       <ToastContainer position="top-center" autoClose={3000} />
