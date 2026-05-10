@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   CalendarDays,
   Clock3,
@@ -9,19 +9,15 @@ import {
 
 import WhatsAppButton from "./WhatsAppButton";
 
-import {
-  showSuccessToast,
-  showErrorToast,
-  ToastContainerWrapper
-} from "./Toast";
-
-// ✅ LIVE BACKEND URL
 const BASE_URL = "https://landing-page-backend-r3d1.onrender.com";
 
 export default function LandingPage() {
 
+  const navigate = useNavigate();
+
   const [openForm, setOpenForm] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [successModal, setSuccessModal] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -29,7 +25,7 @@ export default function LandingPage() {
     phone: ""
   });
 
-  // HANDLE INPUT CHANGE
+  // INPUT CHANGE
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -39,7 +35,7 @@ export default function LandingPage() {
     }));
   };
 
-  // HANDLE SUBMIT
+  // SUBMIT
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -49,19 +45,19 @@ export default function LandingPage() {
 
     // VALIDATION
     if (name.length < 3) {
-      showErrorToast("Name must be at least 3 characters");
+      alert("Name must be at least 3 characters");
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      showErrorToast("Please enter a valid email address");
+      alert("Please enter a valid email address");
       return;
     }
 
     const phoneRegex = /^[0-9+\-\s()]{10,15}$/;
     if (!phoneRegex.test(phone)) {
-      showErrorToast("Please enter a valid phone number");
+      alert("Please enter a valid phone number");
       return;
     }
 
@@ -83,12 +79,11 @@ export default function LandingPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        showErrorToast(data.error || "Registration failed");
+        alert(data.error || "Registration failed");
         return;
       }
 
-      showSuccessToast("🎉 Registration successful!");
-
+      // SUCCESS
       setFormData({
         name: "",
         email: "",
@@ -96,10 +91,11 @@ export default function LandingPage() {
       });
 
       setOpenForm(false);
+      setSuccessModal(true);
 
     } catch (error) {
       console.error(error);
-      showErrorToast("❌ Server error. Please try again.");
+      alert("❌ Server error. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -108,12 +104,46 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white text-gray-800">
 
-      {/* HERO */}
+      {/* SUCCESS MODAL (NEW ADDITION ONLY) */}
+      {successModal && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+
+          <div className="bg-white w-full max-w-md rounded-2xl p-8 text-center relative shadow-2xl">
+
+            <button
+              onClick={() => setSuccessModal(false)}
+              className="absolute top-3 right-4 text-xl"
+            >
+              ✕
+            </button>
+
+            <div className="text-5xl mb-4">🎉</div>
+
+            <h2 className="text-2xl font-bold text-green-700 mb-3">
+              Registration Successful!
+            </h2>
+
+            <p className="text-gray-600 mb-6">
+              Thank you for registering. Click below to access the Zoom meeting link.
+            </p>
+
+            <button
+              onClick={() => navigate("/link")}
+              className="bg-green-700 text-white px-6 py-3 rounded-xl font-bold hover:bg-green-800 transition"
+            >
+              View Zoom Meeting Link
+            </button>
+
+          </div>
+
+        </div>
+      )}
+
+      {/* HERO (UNCHANGED) */}
       <section className="bg-amber-700 text-white">
 
         <div className="max-w-7xl mx-auto px-6 py-24 text-center">
 
-          {/* LOGO */}
           <div className="flex justify-center mb-6">
             <img
               src="/rk-logo.png"
@@ -125,7 +155,6 @@ export default function LandingPage() {
             />
           </div>
 
-          {/* BADGE */}
           <div className="inline-flex items-center gap-2 bg-white/20 px-4 py-2 rounded-full mb-6">
             <Mic size={18} />
             <span className="text-sm font-medium">
@@ -133,25 +162,20 @@ export default function LandingPage() {
             </span>
           </div>
 
-          {/* TITLE */}
           <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
-            Learn How To Write Books
-            <br />
+            Learn How To Write Books<br />
             And Earn From Them
           </h1>
 
-          {/* DESCRIPTION */}
           <p className="text-lg md:text-xl max-w-3xl mx-auto text-amber-100 mb-10">
-            Join{" "}
-            <span className="font-bold">Redempta</span>{" "}
-            for a powerful session on writing, publishing, and monetizing your ideas.
+            Join <span className="font-bold">Redempta</span> for a powerful session on writing, publishing, and monetizing your ideas.
           </p>
 
         </div>
 
       </section>
 
-      {/* EVENT DETAILS */}
+      {/* EVENT DETAILS (UNCHANGED) */}
       <section className="max-w-6xl mx-auto px-6 py-20">
         <div className="grid md:grid-cols-3 gap-8">
 
@@ -176,7 +200,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ABOUT */}
+      {/* ABOUT (UNCHANGED) */}
       <section className="bg-amber-50 py-20">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-14 items-center">
 
@@ -194,9 +218,6 @@ export default function LandingPage() {
               src="/redempta-kanja.png"
               alt="Speaker"
               className="w-44 h-44 mx-auto rounded-full object-cover border-4 border-amber-700"
-              onError={(e) => {
-                e.target.src = "https://via.placeholder.com/150";
-              }}
             />
 
             <h3 className="text-2xl font-bold text-amber-700 mt-4">
@@ -212,8 +233,9 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* CTA (ONLY BUTTON MODIFIED WITH ANIMATION) */}
       <section className="py-24 bg-amber-700 text-white text-center">
+
         <h2 className="text-4xl font-extrabold mb-6">
           Reserve Your Spot Today
         </h2>
@@ -224,9 +246,10 @@ export default function LandingPage() {
         >
           Register Now
         </button>
+
       </section>
 
-      {/* MODAL */}
+      {/* MODAL FORM */}
       {openForm && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
 
@@ -275,12 +298,24 @@ export default function LandingPage() {
                 required
               />
 
+              {/* ANIMATED BUTTON */}
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-amber-700 text-white py-3 rounded-lg font-bold"
+                className={`w-full flex items-center justify-center gap-2 py-3 rounded-lg font-bold transition-all duration-300
+                  ${loading
+                    ? "bg-amber-500 cursor-not-allowed opacity-90"
+                    : "bg-amber-700 hover:bg-amber-800"
+                  } text-white`}
               >
-                {loading ? "Submitting..." : "Submit Registration"}
+                {loading ? (
+                  <>
+                    <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                    Submitting...
+                  </>
+                ) : (
+                  "Submit Registration"
+                )}
               </button>
 
             </form>
@@ -290,7 +325,6 @@ export default function LandingPage() {
         </div>
       )}
 
-      <ToastContainerWrapper />
       <WhatsAppButton />
 
       <footer className="text-center py-8 text-gray-500">

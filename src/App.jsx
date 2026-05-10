@@ -26,6 +26,8 @@ import InquiryAdmin from './InquiryAdmin';
 import LandingPage from './LandingPage';
 import RedemptaKanja from './RedemptaKanja';
 import CollectedData from './CollectedData';
+import MeetingLink from './MeetingLink';
+import MeetingLinkAdmin from './MeetingLinkAdmin';
 
 
 
@@ -41,7 +43,11 @@ const App = () => {
   {/* Public Landing Page */}
   <Route path="promo" element={<LandingPage />} />
   <Route path="biography" element={<RedemptaKanja />} />
-  <Route path="data" element={<CollectedData/>} />
+  <Route path="registrations" element={<CollectedData/>} />
+  <Route path="link" element={<MeetingLink/>} />
+  <Route path="admin" element={<MeetingLinkAdmin/>} />
+
+
 
 
 
