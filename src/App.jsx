@@ -25,6 +25,8 @@ import ProtectedAdmin from './ProtectedAdmin';
 import InquiryAdmin from './InquiryAdmin';
 import LandingPage from './LandingPage';
 import RedemptaKanja from './RedemptaKanja';
+import CollectedData from './CollectedData';
+
 
 
 
@@ -37,8 +39,10 @@ const App = () => {
         <Route path="/feedback" element={<FeedbackForm />} />
 
   {/* Public Landing Page */}
-  <Route path="/promo" element={<LandingPage />} />
+  <Route path="promo" element={<LandingPage />} />
   <Route path="biography" element={<RedemptaKanja />} />
+  <Route path="data" element={<CollectedData/>} />
+
 
 
         {/* Admin Routes with Nested Layout */}
